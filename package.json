@@ -10,6 +10,7 @@
     "request": "~2.21.0",
     "ltx": ">= 0.1.1",
     "socket.io": ">= 0.9.14",
+    "nodepie": ">= 0.6.1"
   },
   "devDependencies": {
     "mocha": "~1.9.0"

@@ -3,6 +3,8 @@
 request = require 'request'
 ltx     = require 'ltx'
 clc     = require 'cli-color'
+NodePie = require 'nodepie'
+
 RssFeed = require('./rss_feed').RssFeed
 AtomFeed = require('./atom_feed').AtomFeed
 
@@ -14,16 +16,6 @@ incomming  = (t) -> console.log   clc.xterm(120)       "\n→ #{t}"
 
 FeedError = (@message) -> @name = "Feed Parsing Error"
 
-KNOWN_FORMATS = {
-  'http://www.w3.org/2005/Atom': 'ATOM'
-  'http://www.w3.org/1999/02/22-rdf-syntax-ns#': 'RSS'
-  rss: 'RSS'
-  rss09: 'RSS'
-  rss10: 'RSS'
-  rss11: 'RSS'
-  rss20: 'RSS'
-}
-
 feeds = {
   #golem_atom: 'http://rss.golem.de/rss.php?feed=ATOM1.0'
   #golem_rss: 'http://golem.de.dynamic.feedsportal.com/pf/578068/http://rss.golem.de/rss.php?feed=RSS1.0'
@@ -34,30 +26,17 @@ feeds = {
 
 }
 
-identifyFormat = (el) ->
-    ns = el.getNS()
-    format =
-      if ns of KNOWN_FORMATS
-        KNOWN_FORMATS[ns]
-      else if el.attrs['xmlns:rdf']?
-        KNOWN_FORMATS[el.attrs['xmlns:rdf']]
-      else if el.getName() == 'rss'
-        KNOWN_FORMATS['rss']
-      else
-        undefined
-
-parse = (body) -> ltx.parse body
 
 parseResponse = (error, response, body)->
   unless error or response.statusCode != 200
-    el = parse body
-    #console.log Object.keys response
-    format = identifyFormat el
-    feed = switch format
-      when 'RSS'  then new RssFeed el
-      when 'ATOM' then new AtomFeed el
-    info feed.title
-    console.log feed
+    xml = body
+    feed = new NodePie xml
+    feed.init()
+    console.log feed.getTitle()
+    console.log feed.getDescription()
+    item = feed.getItem(0)
+    console.log item.getPermalink()
+
 
 for name, feed of feeds
   request feed, parseResponse
