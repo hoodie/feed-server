@@ -1,14 +1,13 @@
 {
   "name": "feed-server",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "private": true,
   "description": "a feed crawling backend server",
-  "main": "server.coffee",
   "dependencies": {
-    "cli-color": "~0.2.2",
     "node-xmpp": "~0.3.2",
     "express": "3.2.5",
     "request": "~2.21.0",
-    "ltx": ">= 0.1.1",
+    "jade": "*",
     "socket.io": ">= 0.9.14",
     "nodepie": ">= 0.6.1"
   },
@@ -16,7 +15,7 @@
     "mocha": "~1.9.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": "",
   "keywords": [
