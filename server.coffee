@@ -8,12 +8,12 @@ express = require "express"
 http    = require "http"
 path    = require "path"
 io      = require "socket.io"
-
-request = require "request"
-NodePie = require 'nodepie'
+repl    = require 'repl'
 
 routes  = require "./routes"
 user    = require "./routes/user"
+
+FeedGrabber = require "./feed_grabber"
 
 app = express()
 
@@ -38,45 +38,19 @@ io      = io.listen server
 
 #require('repl').start { prompt: "app: ", input: process.stdin, output: process.stdout, useGlobal: yes }
 
-allsockets = []
+global.allsockets = allsockets = []
 # socket.io stuff
 io.sockets.on "connection", (socket) ->
 
-  socket.emit "news",
-    hello: "world"
+  socket.emit "welcome", hello: "world"
 
-  socket.on "my other event", (data) ->
+  socket.on "init feed model", (data) ->
     console.log data
+    feedGrabber = new FeedGrabber()
+
 
   allsockets.push socket
 
+ 
 
-
-
-# feed stuff
-feeds = {
-  #golem_atom: 'http://rss.golem.de/rss.php?feed=ATOM1.0'
-  #golem_rss: 'http://golem.de.dynamic.feedsportal.com/pf/578068/http://rss.golem.de/rss.php?feed=RSS1.0'
-  #heise: 'http://heise.de.feedsportal.com/c/35207/f/653902/index.rss'
-  heise_old: 'http://heise.de.feedsportal.com/c/35207/f/653901/index.rss'
-  #heute: 'http://www.heute.de/ZDFheute-Nachrichten-Startseite-3998.html?view=rss'
-  #spiegel: 'http://www.spiegel.de/index.rss'
-
-}
-
-
-
-parseResponse = (error, response, body)->
-  unless error or response.statusCode != 200
-    xml = body
-    feed = new NodePie xml
-    feed.init()
-    console.log feed.getTitle()
-    console.log feed.getDescription()
-    item = feed.getItem(0)
-    console.log item.getPermalink()
-
-
-for name, feed of feeds
-  request feed, parseResponse
-
+repl.start { prompt: "Server: ", input: process.stdin, output: process.stdout, useGlobal: yes }
