@@ -11,7 +11,12 @@ request = require "request"
 NodePie = require 'nodepie'
 EventEmitter = require('events').EventEmitter
 
-class FeedGrabber extends EventEmitter
+class FeedGrabber
+  constructor: ->
+    @events = new EventEmitter
+
+  on: ->
+    @events.on.apply @events, arguments
 
   hash: (string) -> crypto.createHash('sha1').update(string).digest('hex')
 
@@ -33,14 +38,28 @@ class FeedGrabber extends EventEmitter
     for item in feed.getItems()
       if item.getTitle() and item.getPermalink()
         hitem = @hash item.getPermalink()
-        @MODEL[hfeed][hitem] = item
+        @MODEL[hfeed][hitem] ?= item
 
+        @events.emit 'new_item', @pacify_item item
+
+  pacify_item: (item) ->
+    {
+      feedid      : @hash item.feed.getTitle()
+      id          : @hash item.getPermalink()
+      feed_title  : item.feed.getTitle()
+      title       : item.getTitle()
+      contents    : item.getContents()
+      description : item.getDescription()
+      permalink   : item.getPermalink()
+      author      : item.getAuthor()
+    }
 
   grabFeed: (feed_url = @TEST_FEED)=>
     request feed_url, parseResponse = (error, response, xml)=>
       unless error or response.statusCode != 200
         feed = new NodePie xml
         feed.init()
+        @events.emit 'refreshed_feed', feed
         console.log feed.getTitle()
         @sortin feed
 

@@ -39,18 +39,26 @@ io      = io.listen server
 #require('repl').start { prompt: "app: ", input: process.stdin, output: process.stdout, useGlobal: yes }
 
 global.allsockets = allsockets = []
+feedGrabber = new FeedGrabber()
+feedGrabber.on 'new_item', (item) =>
+  sock.emit 'new_feed_item', item for sock in allsockets
+
 # socket.io stuff
 io.sockets.on "connection", (socket) ->
+  allsockets.push socket
 
   socket.emit "welcome", hello: "world"
 
-  socket.on "init feed model", (data) ->
+  socket.on "ping", (data) ->
     console.log data
-    feedGrabber = new FeedGrabber()
+
+  socket.on "start_grabbing", (data) ->
+    setInterval (->feedGrabber.grabFeeds()), 15000
+  socket.on "init_model", (data) ->
+    feedGrabber.grabFeeds()
 
 
-  allsockets.push socket
 
  
 
-repl.start { prompt: "Server: ", input: process.stdin, output: process.stdout, useGlobal: yes }
+#repl.start { prompt: "Server: ", input: process.stdin, output: process.stdout, useGlobal: yes }
