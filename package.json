@@ -9,6 +9,8 @@
     "request": "~2.21.0",
     "jade": "*",
     "socket.io": ">= 0.9.14",
+    "coffee-script": ">= 1.6.2",
+    "connect-assets": ">= 2.4.3",
     "nodepie": ">= 0.6.1"
   },
   "devDependencies": {
