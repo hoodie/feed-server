@@ -1,10 +1,12 @@
 #!/usr/bin/env coffee
 
-io      = require "socket.io"
-repl    = require 'repl'
-FeedGrabber = require "./feed_grabber"
+io       = require "socket.io"
+repl     = require 'repl'
+http     = require 'http'
+backbone = require 'backbone'
+
 app = require './app/main'
-http = require 'http'
+FeedGrabber = require "./feed_grabber"
 
 
 
