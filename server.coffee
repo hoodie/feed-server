@@ -3,10 +3,9 @@
 io       = require "socket.io"
 repl     = require 'repl'
 http     = require 'http'
-backbone = require 'backbone'
 
 app = require './app/main'
-FeedGrabber = require "./feed_grabber"
+FeedGrabber = require "./lib/feed_grabber"
 
 
 
