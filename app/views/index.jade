@@ -1,16 +1,21 @@
 extends layout
 
 block append scripts
-  != js('underscore-min')
-  != js('socket.io-min')
-  != js('backbone-min')
+  != js('jquery-2.0.2')
+  != js('underscore')
+  != js('socket.io')
+  != js('backbone')
   != js('models')
-  != js('feed_client')
+  != js('views')
 
 block append head
   != css('style')
 block content
   h1= title
   p Welcome to #{title}
-    a(href="http://heise.de/") heise.de
+  a(href="http://heise.de/") heise.de
 
+  div
+    ul#FeedsView
+
+  != js('feed_client')

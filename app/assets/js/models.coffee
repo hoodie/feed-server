@@ -67,7 +67,7 @@ class Feed extends Backbone.Model
   
 
 
-
+document?.includes = {}
 module?.exports.FeedList = FeedList
 document?.FeedList       = FeedList
 module?.exports.Feed = Feed

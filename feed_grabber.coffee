@@ -34,6 +34,7 @@ class FeedGrabber
     #heise_old: 'http://heise.de.feedsportal.com/c/35207/f/653901/index.rss'
     heute: 'http://www.heute.de/ZDFheute-Nachrichten-Startseite-3998.html?view=rss'
     spiegel: 'http://www.spiegel.de/index.rss'
+    zeit: 'http://newsfeed.zeit.de/index'
 
   sortin: (feed) =>
     @MODEL[feed.get 'title'] = feed
@@ -61,10 +62,10 @@ class FeedGrabber
 
         @events.emit 'refreshed_feed', feed.toJSON()
         console.log feed.get 'title'
-        @sortin feed
 
 
   grabFeeds: ->
+
     for name, feed_url of @FEEDS
       @grabFeed feed_url
       
