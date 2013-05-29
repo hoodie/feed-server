@@ -3,7 +3,10 @@ if module?
 else
   Backbone = window?.Backbone
 
+class FeedList extends Backbone.Collection
+  model: Feed
 class ItemList extends Backbone.Collection
+  model: Item
 
 
 class Item extends Backbone.Model
@@ -30,16 +33,23 @@ class Feed extends Backbone.Model
     title: "empty feed"
 
   initialize: ->
+    console.log @get 'title'
     @items = new ItemList()
+
+    items_json = @get 'items_json'
+    if @items_json?
+      for item in items_json
+        @items.add new Item item
+
 
   toJSON: ->
     json = super()
-    json.items = @items.toJSON()
+    json.items_json = @items.toJSON()
     json
 
   loadPie: (@nodepieFeed) ->
-
     if @nodepieFeed?
+      @set "id"       , @nodepieFeed.getTitle()
       @set "title"       , @nodepieFeed.getTitle()
       @set "encoding"    , @nodepieFeed.getEncoding()
       @set "description" , @nodepieFeed.getDescription()
@@ -58,6 +68,8 @@ class Feed extends Backbone.Model
 
 
 
+module?.exports.FeedList = FeedList
+document?.FeedList       = FeedList
 module?.exports.Feed = Feed
 document?.Feed       = Feed
 module?.exports.Item = Item
