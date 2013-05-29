@@ -1,5 +1,5 @@
 console.info('hello')
-OLD_FEED_MODEL = {}
+document.OLD_FEED_MODEL = OLD_FEED_MODEL = {}
 
 document.socket = socket = io.connect('http://localhost:3000')
 socket.on 'welcome', (data)=>
@@ -10,5 +10,7 @@ socket.on 'new_feed_item', (item)->
   OLD_FEED_MODEL[item.feedid] ?= {}
   unless OLD_FEED_MODEL[item.feedid][item.id]?
     OLD_FEED_MODEL[item.feedid][item.id] = item
+
+
 
 

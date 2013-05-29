@@ -61,11 +61,13 @@ class FeedGrabber
   grabFeed: (feed_url = @TEST_FEED)=>
     request feed_url, parseResponse = (error, response, xml)=>
       unless error or response.statusCode != 200
-        feed = new NodePie xml
-        feed.init()
-        @events.emit 'refreshed_feed', feed
-        console.log feed.getTitle()
-        @sortin feed
+        pieFeed = new NodePie xml
+        pieFeed.init()
+        feed = new Feed pieFeed
+
+        @events.emit 'refreshed_feed', feed.toJSON()
+        console.log feed.get 'title'
+        @sortin pieFeed
 
 
   grabFeeds: ->

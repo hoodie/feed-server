@@ -5,7 +5,7 @@ repl     = require 'repl'
 http     = require 'http'
 
 app = require './app/main'
-FeedGrabber = require "./lib/feed_grabber"
+FeedGrabber = require "./feed_grabber"
 
 
 
@@ -30,6 +30,7 @@ io.sockets.on "connection", (socket) ->
 
   socket.on "start_grabbing", (data) ->
     setInterval (->feedGrabber.grabFeeds()), 15000
+
   socket.on "init_model", (data) ->
     feedGrabber.grabFeeds()
 
