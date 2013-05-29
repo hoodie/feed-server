@@ -4,7 +4,6 @@
   "private": true,
   "description": "a feed crawling backend server",
   "dependencies": {
-    //"node-xmpp": "~0.3.2",
     "backbone": "1.0.0",
     "coffee-script": ">= 1.6.2",
     "connect-assets": ">= 2.4.3",
