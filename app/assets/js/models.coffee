@@ -8,6 +8,8 @@ class ItemList extends Backbone.Collection
 
 class Item extends Backbone.Model
   initialize: (@nodepieItem)->
+
+  loadPie: (@nodepieItem)->
     @set "feed_title"  , @nodepieItem.feed.getTitle()
     @set "title"       , @nodepieItem.getTitle()
     @set "date"        , @nodepieItem.getDate()
@@ -27,9 +29,15 @@ class Feed extends Backbone.Model
   defaults: ->
     title: "empty feed"
 
-
-  initialize: (@nodepieFeed) ->
+  initialize: ->
     @items = new ItemList()
+
+  toJSON: ->
+    json = super()
+    json.items = @items.toJSON()
+    json
+
+  loadPie: (@nodepieFeed) ->
 
     if @nodepieFeed?
       @set "title"       , @nodepieFeed.getTitle()
@@ -43,7 +51,9 @@ class Feed extends Backbone.Model
       #@set "link"       , @nodepieFeed.get()
 
       for item in @nodepieFeed.getItems()
-        @items.add new Item item
+        bbitem = new Item()
+        bbitem.loadPie item
+        @items.add bbitem
   
 
 

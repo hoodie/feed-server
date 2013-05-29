@@ -36,15 +36,7 @@ class FeedGrabber
     spiegel: 'http://www.spiegel.de/index.rss'
 
   sortin: (feed) =>
-    hfeed = @hash feed.getTitle()
-    @MODEL[hfeed] ?= {}
-
-    for item in feed.getItems()
-      if item.getTitle() and item.getPermalink()
-        hitem = @hash item.getPermalink()
-        @MODEL[hfeed][hitem] ?= item
-
-        @events.emit 'new_item', @pacify_item item
+    @MODEL[feed.get 'title'] = feed
 
   pacify_item: (item) ->
     {
@@ -63,11 +55,13 @@ class FeedGrabber
       unless error or response.statusCode != 200
         pieFeed = new NodePie xml
         pieFeed.init()
-        feed = new Feed pieFeed
+
+        feed = new Feed()
+        feed.loadPie pieFeed
 
         @events.emit 'refreshed_feed', feed.toJSON()
         console.log feed.get 'title'
-        @sortin pieFeed
+        @sortin feed
 
 
   grabFeeds: ->
