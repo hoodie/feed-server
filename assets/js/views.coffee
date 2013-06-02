@@ -1,11 +1,11 @@
-#Backbone = window?.Backbone
-#console.log Backbone.$ = $
+{rquire, dfine, Backbone} = window
 
-FeedList = document?.FeedList
-Feed     = document?.Feed
-feeds = document?.feeds
+FeedList = rquire 'FeedList'
+Feed = rquire 'Feed'
 
-class document.SimpleFeedsView extends Backbone.View
+feeds = rquire 'feeds'
+
+class SimpleFeedsView extends Backbone.View
 
   @tagName : "li"
 
@@ -16,3 +16,5 @@ class document.SimpleFeedsView extends Backbone.View
     @$el.append "<li>#{feed.get 'title'}</li>"
 
   render: ->
+
+dfine SimpleFeedsView

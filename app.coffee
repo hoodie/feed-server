@@ -1,6 +1,6 @@
-routes = require './routes'
+routes  = require './routes'
 express = require 'express'
-
+assets  = require 'connect-assets'
 app = module.exports = express()
 
 # Configuration
@@ -15,9 +15,10 @@ app.configure ->
 	app.use app.router
 
 	publicDir = "#{__dirname}/public"
+  #sharedDir = "#{__dirname}/libs"
 	assetsDir = "#{__dirname}/assets"
 
-	app.use require('connect-assets') { src: assetsDir }
+	app.use assets { src: assetsDir }
 	app.use express.static(publicDir)
 	return
 

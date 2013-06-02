@@ -1,10 +1,13 @@
 if module?
   Backbone = require 'backbone'
+  {rquire, dfine} = require './dfine'
 else
-  Backbone = window?.Backbone
+  {rquire, dfine, Backbone} = window
+
 
 class FeedList extends Backbone.Collection
   model: Feed
+
 class ItemList extends Backbone.Collection
   model: Item
 
@@ -23,8 +26,6 @@ class Item extends Backbone.Model
     @set "alternate"   , @nodepieItem.getPermalink('alternate', 'text/html')
     @set "author"      , @nodepieItem.getAuthor()
     @set "authors"     , @nodepieItem.getAuthors()
-
-
 
 
 class Feed extends Backbone.Model
@@ -66,11 +67,6 @@ class Feed extends Backbone.Model
         @items.add bbitem
   
 
+exports = dfine {FeedList, ItemList, Feed, Item}
+module.exports = exports if module?
 
-document?.includes = {}
-module?.exports.FeedList = FeedList
-document?.FeedList       = FeedList
-module?.exports.Feed = Feed
-document?.Feed       = Feed
-module?.exports.Item = Item
-document?.Item       = Item
