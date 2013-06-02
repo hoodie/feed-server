@@ -4,7 +4,7 @@ io       = require "socket.io"
 repl     = require 'repl'
 http     = require 'http'
 
-app = require './app/main'
+app = require './app'
 FeedGrabber = require "./feed_grabber"
 
 

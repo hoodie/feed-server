@@ -1,3 +1,4 @@
+routes = require './routes'
 express = require 'express'
 
 app = module.exports = express()
@@ -29,3 +30,7 @@ app.configure 'development', ->
 app.configure 'production', ->
 	app.use express.errorHandler()
 	return
+
+# Routes
+
+app.get '/', routes.index

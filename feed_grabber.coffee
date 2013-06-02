@@ -9,8 +9,8 @@ crypto  = require "crypto"
 repl    = require 'repl'
 request = require "request"
 backbone = require 'backbone'
-Feed    = require("./app/assets/js/models").Feed
-Item    = require("./app/assets/js/models").Item
+Feed    = require("./assets/js/models").Feed
+Item    = require("./assets/js/models").Item
 
 NodePie = require 'nodepie'
 EventEmitter = require('events').EventEmitter
